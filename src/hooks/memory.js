@@ -1,11 +1,11 @@
-import { ref, watch } from 'vue';
+import { ref, watch, reactive } from 'vue';
 
-function initGrid(){
+function initGrid(row, col){
     const grid = [];
     const possibleValues = [0,1,2,3,4,5,6,7,8,9];
 
     // Generate 8 pairs (since the total array length is 16)
-    for (let i = 0; i < 8; i++) {
+    for (let i = 0; i < (row*col)/2; i++) {
         const randomValue = possibleValues[Math.floor(Math.random() * possibleValues.length)];
         // Push the same value twice to create a pair
         grid.push(randomValue, randomValue);
@@ -17,46 +17,69 @@ function initGrid(){
         [grid[i], grid[j]] = [grid[j], grid[i]]; // Swap elements
     }
 
-    return grid;
+    return grid.map((i) => {
+        return {
+            value: i,
+            open: false,
+        }
+    });
 }
 
-export default function useMemoryGame (){
-    const grid = ref(initGrid())
+export default function useMemoryGame (row, col){
+    const grid = ref(initGrid(row, col))
     const matches = ref([])
     const guesses = ref(0)
     const selected = ref([])
+    const numSelected = ref(0)
+    const canSelect = ref(true)
+
+    const status = reactive({
+        matches: matches,
+        guesses: guesses,
+    })
 
     function isMatch(a, b){
-        if (matches.value.includes(a) | matches.value.includes(b)){
-            return ;
-        }
         guesses.value += 1
-        if (grid.value[a] == grid.value[b]){
-            matches.value.push(a, b)
-            return true
-        }
-        return false
+        if (grid.value[a].value != grid.value[b].value){
+            return false
+        }   
+        matches.value.push(a, b)
+        return true
     }
 
-    function selectCell(index){
-        if (matches.value.includes(index) && selected.value.includes(index)){
-            returnArray(16).keys()
+    async function selectCell(index){
+        if (! canSelect.value){
+            return
         }
+        if (matches.value.includes(index) || selected.value.includes(index)){
+            return;
+        }
+        
         selected.value.push(index)
+        grid.value[index].open = true
+        numSelected.value += 1
     }
 
-    watch(selected, (newSelected, oldSelected) => {Array(16).keys()
-        if (oldSelected.length === 2){
-            isMatch(...newSelected)
-            selected.value = []
+    watch(numSelected, async (newNum, oldNum) => {
+        if (newNum == 2){
+            canSelect.value = false
+            setTimeout(() => {
+                if(! isMatch(...selected.value)){
+                    grid.value[selected.value[0]].open = false
+                    grid.value[selected.value[1]].open = false
+                }
+                selected.value = []
+                numSelected.value = 0
+                canSelect.value = true
+            }, 300)
         }
     })
 
     function restartGame(){
-        grid.value = initGrid()
+        grid.value = initGrid(row, col)
         matches.value = []
         guesses.value = 0
     }
 
-    return {grid, matches, guesses, restartGame, selectCell}
+    return {grid, status, restartGame, selectCell}
 }
