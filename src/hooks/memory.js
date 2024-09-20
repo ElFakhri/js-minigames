@@ -2,7 +2,7 @@ import { ref, watch } from 'vue';
 
 function initGrid(){
     const grid = [];
-    const possibleValues = [0, 1, 2, 3, 4];
+    const possibleValues = [0,1,2,3,4,5,6,7,8,9];
 
     // Generate 8 pairs (since the total array length is 16)
     for (let i = 0; i < 8; i++) {
