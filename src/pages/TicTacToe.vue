@@ -1,13 +1,13 @@
 <script setup>
 import useTTT from '../hooks/tictactoe';
-import Main from '../layout/Main.vue';
+import Game from '../layout/Game.vue';
 
-const {cells, winner, cellClicked, restartGame} = useTTT()
+const {cells, winner, statusText, cellClicked, restartGame} = useTTT()
 
 </script>
 
 <template>
-  <Main>
+  <Game>
     <h1>Tic Tac Toe</h1>
     <h2 v-if="winner">The winner is {{ winner }}</h2>
     <div class="board">
@@ -15,7 +15,7 @@ const {cells, winner, cellClicked, restartGame} = useTTT()
     </div>
     <div>{{ statusText }}</div>
     <button id="restartBtn" @click="restartGame">Restart</button>
-  </Main>
+  </Game>
 </template>
 
 <style scoped>

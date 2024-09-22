@@ -61,5 +61,5 @@ export default function useTTT (){
         running.value = true
     }
 
-    return {cells, winner, cellClicked, restartGame}
+    return {cells, winner, statusText, cellClicked, restartGame}
 }

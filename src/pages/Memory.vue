@@ -1,6 +1,7 @@
 <script setup>
 import MemoryCard from '../components/MemoryCard.vue';
 import useMemoryGame from '../hooks/memory'; 
+import Game from '../layout/Game.vue';
 
 const {grid, matches, guesses, restartGame} = useMemoryGame()
 
@@ -8,9 +9,11 @@ const {grid, matches, guesses, restartGame} = useMemoryGame()
 </script>
 
 <template>
-    <div class="cards">
-        <MemoryCard v-for="i in grid" :value="i"></MemoryCard>
-    </div>
+    <Game>
+        <div class="cards">
+            <MemoryCard v-for="i in grid" :value="i"></MemoryCard>
+        </div>
+    </Game>
 </template>
 
 <style>
