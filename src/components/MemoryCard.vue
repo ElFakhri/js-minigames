@@ -1,17 +1,13 @@
 <script setup>
-import { ref } from 'vue';
-
 const props = defineProps({
-    value: Number
+    card: Object
 })
-
-const isClicked = ref(false)
 
 </script>
 
-<template>
-    <div class="card" :class="isClicked ? '' : 'closed'">
-        <img :src="`https://placehold.co/400?text=${props.value}`" width="100%" @click="isClicked = !isClicked">
+<template>  
+    <div class="card" :class="props.card.open ? '' : 'closed'">
+        <img :src="`https://placehold.co/400?text=${props.card.value}`" width="100%">
     </div>
 </template>
 
