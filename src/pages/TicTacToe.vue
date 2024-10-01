@@ -2,7 +2,7 @@
 import useTTT from '../hooks/tictactoe';
 import Main from '../layout/Main.vue';
 
-const {cells, winner, cellClicked, restartGame} = useTTT()
+const {cells, winner, statusText, cellClicked, restartGame} = useTTT()
 
 </script>
 

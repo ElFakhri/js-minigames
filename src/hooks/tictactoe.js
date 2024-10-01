@@ -9,8 +9,6 @@ export default function useTTT (){
     const currentPlayer = ref("X");
     const running = ref(true);
 
-    const mapper = {X: 1, O: -1}
-
     const winConds = [
         [0, 1, 2],
         [3, 4, 5],
@@ -24,14 +22,14 @@ export default function useTTT (){
 
     function checkWinner(){
         for(let i=0; i<winConds.length; i++){
-            let score = 0
-            for(let j=0; j<winConds[i].length; j++){
-                let position = winConds[i][j]
-                score += mapper[cells.value[position]]
-            }
+            const pos1 = cells.value[winConds[i][0]];
+            const pos2 = cells.value[winConds[i][1]];
+            const pos3 = cells.value[winConds[i][2]];
 
-            if (Math.abs(score) == 3){
-                return score
+
+            if (pos1 == pos2 && pos2 == pos3 && pos1 != "") {
+                running.value = false
+                winner.value = pos1
             }
         }
     }
@@ -42,10 +40,8 @@ export default function useTTT (){
         }
         
         cells.value[index] = currentPlayer.value;
-        let score = checkWinner()
-        if (score){
-            running.value = false
-            winner.value = (score == 3) ? "X" : "O"
+        let isWin = checkWinner()
+        if (isWin){
             return
         }
 
@@ -61,5 +57,5 @@ export default function useTTT (){
         running.value = true
     }
 
-    return {cells, winner, cellClicked, restartGame}
+    return {cells, winner, statusText, cellClicked, restartGame}
 }
