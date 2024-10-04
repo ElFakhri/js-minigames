@@ -40,6 +40,8 @@ export default function useTTT (){
         }
         
         cells.value[index] = currentPlayer.value;
+
+        
         let isWin = checkWinner()
         if (isWin){
             return

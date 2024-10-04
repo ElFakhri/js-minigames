@@ -24,7 +24,7 @@ const {cells, winner, statusText, cellClicked, restartGame} = useTTT()
   grid-template-columns: repeat(3, auto);
   width: 225px;
   margin: auto;
-  font-family: "Permanent Marker"
+  font-family: "Grandstander"
 }
 
 .cell {
